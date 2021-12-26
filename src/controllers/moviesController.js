@@ -3,13 +3,14 @@ const db = require('../database/models');
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
 const moment = require('moment');
+const fetch = require('node-fetch');
 
 
 //Aqui tienen otra forma de llamar a cada uno de los modelos
 const Movies = db.Movie;
 const Genres = db.Genre;
 const Actors = db.Actor;
-
+const API = 'http://www.omdbapi.com/?apikey=d4e35e92';
 
 const moviesController = {
     'list': (req, res) => {
@@ -54,6 +55,10 @@ const moviesController = {
                 res.render('recommendedMovies.ejs', {movies});
             });
     },
+    //Aqui debo modificar para crear la funcionalidad requerida
+    'buscar': (req, res) => {
+        
+    },
     //Aqui dispongo las rutas para trabajar con el CRUD
     add: function (req, res) {
         let promGenres = Genres.findAll();
@@ -66,7 +71,8 @@ const moviesController = {
         .catch(error => res.send(error))
     },
     create: function (req,res) {
-        db.Movies.create(
+        Movies
+        .create(
             {
                 title: req.body.title,
                 rating: req.body.rating,
